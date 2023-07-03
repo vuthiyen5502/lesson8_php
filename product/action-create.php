@@ -8,5 +8,5 @@ $data = [
 'cateId' => $_POST['cateId']
 ];
 createNewProdData($data);
-header("Location: http://localhost/lesson8_php/products/index.php");
+header("Location: http://localhost/lesson8_php/product/index.php");
 ?>
