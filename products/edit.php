@@ -1,50 +1,51 @@
 <?php
-require_once 'pdo.php';
-$id = $_GET['id'];
-$products = select($id);
+    require_once "pdo.php";
+    $categories = all();
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
+    <title>Chỉnh sửa sản phẩm</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <title>Edit Product</title>
 </head>
 <body>
-        <tbody>
+    <div class="container mt-3">
+        <h3>Update Product</h3>
         <?php 
-        $i = 1; 
-        foreach ($products as $product) : ?>
-        
-                <form id="" action="./edit-product.php" method="post">
-                    <input type="hidden" value="<?= $product['id'] ?>" name="id">
-                </form>
-        <?php endforeach; 
+            $prodId = [
+                'id' => $_GET['id']
+            ];
+            $prodArr = getOneProdData($prodId)[0];
+            $cateId = [
+                'id' => $prodArr['cateId']
+            ];
+            $cateArr = getOneProdData($cateId);
         ?>
-        </tbody>
-<div class="container mt-3">
-    <div class="container-fluid"><h3>Edit Product</h3></div>
-    <a href="./index.php" class="btn btn-primary">Back</a>
-    <form method="POST" action="./edit-product.php">
+        <form action="action-update.php?id=<?=$prodArr['prodId'] ?>" method="POST">
         <div class="mb-3">
-            <label for="" class="form-label">Name</label>
-            <input type="hidden" value="<?= $id ?>" name="id">
-            <input required type="text" class="form-control" name="name" value = "<?= $product['name'] ?>">
-            <label for="" class="form-label">Price</label>
-            <input required type="text" class="form-control" name="price" value = "<?= $product['price'] ?>">
-            <label for="" class="form-label">Category_id</label>
-            <input required type="text" class="form-control" name="ca_id" value = "<?= $product['category_id'] ?>">
+            <label class="form-label">Name</label>
+            <input required type="text" class="form-control" name="prodName" value="<?= $prodArr['prodName']?>">
         </div>
-        <button type="submit" class="btn btn-success">Submit</button>
-    </form>
-</div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <div class="mb-3">
+            <label class="form-label">Price</label>
+            <input required type="text" class="form-control" name="prodPrice" value="<?= $prodArr['prodPrice']?>">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select class="form-select" aria-label="Default select example" name="cateId">
+                <option selected value="<?= $cateArr[0]['id']?>"><?= $cateArr[0]['name']?></option>
+                <?php 
+                    foreach($cateArrs as $dataCate)
+                        if($dataCate['id'] == $cateArr['id'])
+                            continue;                             
+                        else{?>
+                            <option value="<?= $dataCate['id']?>"><?= $dataCate['name']?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <a href="index.php" class="btn btn-success" style="margin-right: 5px"> Back</a>
+        <button type="submit" class="btn btn-success">Update</button>
+        </form>
+    </div>
 </body>
 </html>

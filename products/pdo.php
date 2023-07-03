@@ -1,50 +1,35 @@
 <?php
-$DB_TYPE = 'mysql';
-$DB_HOST = 'localhost';
-$DB_NAME = 'crud_test';
-$USER = 'root';
-$PW = '';
+    require_once "../category/pdo.php";
 
-try {
-    $connection = new PDO("$DB_TYPE:host=$DB_HOST;dbname=$DB_NAME", $USER, $PW);
-    $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-    die("Connection failed: " . $e->getMessage());
-}
+    // Lấy dữ liệu
+    function getProdData(){
+        $sql = "SELECT * FROM products INNER JOIN categories ON products.cateId = categories.id";
+        $select = prepareSQL($sql);
+        $select->execute();
+        return $select->fetchAll();
+    }
 
-function prepareSQL($sql) {
-    global $connection;
-    return $connection->prepare($sql);
-}
+    function getOneProdData($data){
+        $sql = "SELECT * FROM products WHERE prodId = :id";
+        $select = prepareSQL($sql);
+        $select->execute($data);
+        return $select->fetchAll();
+    }
 
-function all() {
-    $sql = "SELECT * FROM products";
-    $stmt = prepareSQL($sql);
-    $stmt->execute();
-    return $stmt->fetchAll();
-}
+    function createNewProdData($data){
+        $sql = "INSERT INTO products (prodId,prodName,prodPrice,cateId)VALUES (:prodId, :prodName, :prodPrice, :cateId)";
+        $create = prepareSQL($sql);
+        $create->execute($data);
+    }
 
-function create($data) {
-    $sql = "INSERT INTO products (name, price, category_id) VALUES (:name, :price, :ca_id)";
-    $stmt = prepareSQL($sql);
-    $stmt->execute($data);
-}
-
-function delete($data) {
-    $sql = "DELETE FROM products where id = :id";
-    $stmt = prepareSQL($sql);
-    $stmt->execute($data);
-}
-
-function update($name, $price, $ca_id, $id) {
-    $sql = "UPDATE products SET name= '$name', price = '$price', category_id = '$ca_id' WHERE id = $id LIMIT 1";
-    $stmt = prepareSQL($sql);
-    $stmt->execute();
-}
-
-function select($data) {
-    $sql = "SELECT * FROM products WHERE id = $data";
-    $stmt = prepareSQL($sql);
-    $stmt->execute();
-    return $stmt->fetchAll();
-}
+    function updateProdData($data){
+        $sql = "UPDATE products SET  prodName = :prodName, prodPrice = :prodPrice, cateId = :cateId  WHERE prodId = :id";
+        $update = prepareSQL($sql);
+        $update->execute($data);
+    }
+    function deleteProdData($data){
+        $sql = "DELETE FROM products WHERE prodId = :id";
+        $update = prepareSQL($sql);
+        $update->execute($data);
+    }
+?>
