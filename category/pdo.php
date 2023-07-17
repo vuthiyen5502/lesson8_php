@@ -8,7 +8,7 @@ abstract class Connection {
 
     public function __construct() {
         $this->host = 'localhost';
-        $this->db = 'testOOP';
+        $this->db = 'crud_test';
         $this->username = 'root';
         $this->password = '';
         $this->connection = $this->connect();
