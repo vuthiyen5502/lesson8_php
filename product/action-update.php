@@ -1,12 +1,13 @@
+
 <?php 
     require_once "pdo.php";
+    $productConnection = new ProductConnection();
     $data = [
-        'prodId' => $_POST['prodID'],
-        'prodName' => $_POST['prodName'],
-        'prodPrice' => $_POST['prodPrice'],
+        'prodName' => $_POST['name'],
+        'prodPrice' => $_POST['price'],
         'cateId' => $_POST['cateId'],
         'id' => $_GET['id']
     ];
-    updateProdData($data);
+    $productConnection->updateProdData($data);
     header("Location: http://localhost/lesson8_php/product/index.php");
 ?>

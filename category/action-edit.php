@@ -1,14 +1,13 @@
-
 <?php
     require_once 'pdo.php';
     $categoryConnection = new CategoryConnection();
 
-    $id = $_POST['id'];
+    $id = ['id' => $_GET['id']];
+    $name = $_POST['name'];
     $data = [
-        'id' => $id
+        'id' => $id['id'],
+        'name' => $name
     ];
-    $categoryConnection->deleteData($data);
-
+    $categoryConnection->updateData($data);
     header("Location: http://localhost/lesson8_php/category/index.php");
-?>
 ?>
